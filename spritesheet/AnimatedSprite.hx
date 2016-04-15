@@ -161,7 +161,9 @@ class AnimatedSprite extends Sprite {
 			bitmap.smoothing = smoothing;
 			bitmap.x = frame.offsetX - currentBehavior.originX;
 			bitmap.y = frame.offsetY - currentBehavior.originY;
-			
+			bitmap.width = frame.width;
+			bitmap.height = frame.height;
+
 			if (behaviorComplete) {
 				
 				if (behaviorQueue.length > 0) {
