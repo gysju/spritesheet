@@ -9,6 +9,7 @@ import haxe.Json;
 class TexturePackerImporter {
 
     public var frameRate:Int = 30;
+    public var usePerFrameBitmapData:Bool = true;
 
     public function new() {}
 
@@ -123,7 +124,7 @@ class TexturePackerImporter {
 
         }
 
-        return new Spritesheet( bitmapData, allFrames, allBehaviors );
+        return new Spritesheet( bitmapData, allFrames, allBehaviors, null, usePerFrameBitmapData );
 
     }
 

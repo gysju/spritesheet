@@ -14,13 +14,14 @@ class Spritesheet {
 	public var behaviors:Map <String, BehaviorData>;
 	public var name:String;
 	public var totalFrames:Int;
+	public var usePerFrameBitmapData(default, null):Bool;
 	
 	private var frames:Array <SpritesheetFrame>;
 	private var sourceImage:BitmapData;
 	private var sourceImageAlpha:BitmapData;
 	
 	
-	public function new (image:BitmapData = null, frames:Array <SpritesheetFrame> = null, behaviors:Map <String, BehaviorData> = null, imageAlpha:BitmapData = null) {
+	public function new (image:BitmapData = null, frames:Array <SpritesheetFrame> = null, behaviors:Map <String, BehaviorData> = null, imageAlpha:BitmapData = null, usePerFrameBitmapData:Bool = true) {
 		
 		this.sourceImage = image;
 		this.sourceImageAlpha = imageAlpha;
@@ -47,6 +48,7 @@ class Spritesheet {
 			
 		}
 		
+		this.usePerFrameBitmapData = usePerFrameBitmapData;
 	}
 	
 	
@@ -79,21 +81,45 @@ class Spritesheet {
 	public function generateBitmap (index:Int):Void {
 		
 		var frame = frames[index];
-		
-		var bitmapData = new BitmapData (frame.width, frame.height, true);
-		var sourceRectangle = new Rectangle (frame.x, frame.y, frame.width, frame.height);
-		var targetPoint = new Point ();
-		
-		bitmapData.copyPixels (sourceImage, sourceRectangle, targetPoint);
-		
-		if (sourceImageAlpha != null) {
+		var bitmapData:BitmapData;
+
+		if (usePerFrameBitmapData) {
+
+			bitmapData = new BitmapData (frame.width, frame.height, true);
+			var sourceRectangle = new Rectangle (frame.x, frame.y, frame.width, frame.height);
+			var targetPoint = new Point ();
 			
-			bitmapData.copyChannel (sourceImageAlpha, sourceRectangle, targetPoint, 2, 8);
+			bitmapData.copyPixels (sourceImage, sourceRectangle, targetPoint);
 			
+			if (sourceImageAlpha != null) {
+				
+				bitmapData.copyChannel (sourceImageAlpha, sourceRectangle, targetPoint, 2, 8);
+				
+			}
 		}
-		
+		else {
+
+			var uvs:TextureUvs = new TextureUvs();
+			bitmapData = sourceImage;
+			var x = frame.x / sourceImage.width;
+			var y = frame.y / sourceImage.height;
+			var w = frame.width / sourceImage.width;
+			var h = frame.height / sourceImage.height;
+
+			uvs.x0 = x;
+			uvs.y0 = y;
+			uvs.x1 = x + w;
+			uvs.y1 = y;
+			uvs.x2 = x + w;
+			uvs.y2 = y + h;
+			uvs.x3 = x;
+			uvs.y3 = y + h;
+			frame.textureUvs = uvs;
+
+		}
+
 		frame.bitmapData = bitmapData;
-		
+
 	}
 	
 	

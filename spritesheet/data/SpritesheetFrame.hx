@@ -15,8 +15,8 @@ class SpritesheetFrame {
 	public var width:Int;
 	public var x:Int;
 	public var y:Int;
-	
-	
+	public var textureUvs:TextureUvs;
+
 	public function new (x:Int = 0, y:Int = 0, width:Int = 0, height:Int = 0, offsetX:Int = 0, offsetY:Int = 0) {
 		
 		this.x = x;

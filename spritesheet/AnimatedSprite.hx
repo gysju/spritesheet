@@ -1,12 +1,13 @@
 package spritesheet;
 
 
-import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
+
 import spritesheet.data.BehaviorData;
+import spritesheet.Bitmap;
 
 
 class AnimatedSprite extends Sprite {
@@ -157,6 +158,7 @@ class AnimatedSprite extends Sprite {
 			bitmap.y = frame.offsetY - currentBehavior.originY;
 			bitmap.width = frame.width;
 			bitmap.height = frame.height;
+			bitmap.textureUvs = frame.textureUvs;
 
 			if (behaviorComplete) {
 				
@@ -207,6 +209,5 @@ class AnimatedSprite extends Sprite {
 		}
 		
 	}
-	
-	
+
 }
