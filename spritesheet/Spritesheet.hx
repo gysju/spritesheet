@@ -121,16 +121,10 @@ class Spritesheet {
 
 					if (frames[index].name==frameName) {
 							frameIndex = index;
-							frame = frames[index];
+							frame = getFrame(index, autoGenerate);
 							break;
 					}
 
-			}
-
-			if (frame != null && frame.bitmapData == null && autoGenerate) {
-					
-					generateBitmap (frameIndex);
-					
 			}
 
 			return frame;
