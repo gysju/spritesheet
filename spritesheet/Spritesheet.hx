@@ -1,9 +1,12 @@
 package spritesheet;
 
 
-import flash.display.BitmapData;
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import openfl.display.IBitmapData;
+import openfl.display.BitmapData;
+import openfl.display.BitmapSubData;
+import openfl.geom.Point;
+import openfl.geom.Rectangle;
+
 import spritesheet.data.BehaviorData;
 import spritesheet.data.SpritesheetFrame;
 
@@ -81,7 +84,7 @@ class Spritesheet {
 	public function generateBitmap (index:Int):Void {
 		
 		var frame = frames[index];
-		var bitmapData:BitmapData;
+		var bitmapData:IBitmapData;
 
 		if (usePerFrameBitmapData) {
 
@@ -89,18 +92,18 @@ class Spritesheet {
 			var sourceRectangle = new Rectangle (frame.x, frame.y, frame.width, frame.height);
 			var targetPoint = new Point ();
 			
-			bitmapData.copyPixels (sourceImage, sourceRectangle, targetPoint);
+			cast(bitmapData, BitmapData).copyPixels (sourceImage, sourceRectangle, targetPoint);
 			
 			if (sourceImageAlpha != null) {
 				
-				bitmapData.copyChannel (sourceImageAlpha, sourceRectangle, targetPoint, 2, 8);
+				cast(bitmapData, BitmapData).copyChannel (sourceImageAlpha, sourceRectangle, targetPoint, 2, 8);
 				
 			}
 		}
 		else {
 
-			var uvs:TextureUvs = new TextureUvs();
-			bitmapData = sourceImage;
+			bitmapData = new BitmapSubData(sourceImage);
+			var uvs = cast(bitmapData, BitmapSubData).textureUvs;
 			var x = frame.x / sourceImage.width;
 			var y = frame.y / sourceImage.height;
 			var w = frame.width / sourceImage.width;
@@ -114,7 +117,6 @@ class Spritesheet {
 			uvs.y2 = y + h;
 			uvs.x3 = x;
 			uvs.y3 = y + h;
-			frame.textureUvs = uvs;
 
 		}
 
