@@ -5,8 +5,8 @@ import flash.display.BitmapData;
 
 
 class SpritesheetFrame {
-	
-	
+
+
 	public var name:String;
 	public var bitmapData:BitmapData;
 	public var height:Int;
@@ -18,15 +18,24 @@ class SpritesheetFrame {
 	public var textureUvs:TextureUvs;
 
 	public function new (x:Int = 0, y:Int = 0, width:Int = 0, height:Int = 0, offsetX:Int = 0, offsetY:Int = 0) {
-		
+
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
-		
+
 	}
-	
-	
+
+	public function fill(bitmap: Bitmap){
+		bitmap.bitmapData = bitmapData;
+		bitmap.x = offsetX;
+		bitmap.y = offsetY;
+		bitmap.width = width;
+		bitmap.height = height;
+		bitmap.textureUvs = textureUvs;
+	}
+
+
 }

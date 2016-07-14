@@ -13,11 +13,11 @@ class TexturePackerImporter {
 
     public function new() {}
 
-    public function parse(path:String, bitmapData:BitmapData, exp:EReg = null):Spritesheet {
+    public function parse(path:String, bitmapData:BitmapData, exp:EReg = null, matchIndex:Int = 0):Spritesheet {
 
         var json = Json.parse(path);
         var tpFrames:Array<TPFrame> = parseJsonFrames(json);
-        var behaviorNames = buildBehaviorMap(tpFrames, exp);
+        var behaviorNames = buildBehaviorMap(tpFrames, exp, matchIndex);
         return generateSpriteSheetForBehaviors(bitmapData, behaviorNames);
 
     }
@@ -66,7 +66,7 @@ class TexturePackerImporter {
         return size;
     }
 
-    private function buildBehaviorMap(frames:Array<TPFrame>, exp:EReg = null):StringMap<Array<TPFrame>> {
+    private function buildBehaviorMap(frames:Array<TPFrame>, exp:EReg = null, matchIndex:Int):StringMap<Array<TPFrame>> {
 
         exp = (exp == null) ? ~// : exp;
         var nameMap = new StringMap<Array<TPFrame>>();
@@ -74,7 +74,7 @@ class TexturePackerImporter {
         for (frame in frames) {
 
             exp.match(frame.filename);
-            var behaviorName:String = exp.matched(0);
+            var behaviorName:String = exp.matched(matchIndex);
             if (!nameMap.exists(behaviorName)) {
 
                 nameMap.set(behaviorName, new Array<TPFrame>());
